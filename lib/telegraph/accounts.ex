@@ -368,4 +368,11 @@ defmodule Telegraph.Accounts do
     |> User.admin_status_changeset(attrs)
     |> Repo.update()
   end
+
+  @doc """
+  Lists all users.
+  """
+  def list_users do
+    Repo.all(User)
+  end
 end

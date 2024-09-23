@@ -1,22 +1,28 @@
 <h1>Admin Users</h1>
 
 <table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Admin?</th>
-        </tr>
-    </thead>
-    <tbody>
-        <%= for user <- @users do %>
-            <tr>
-            <td><%= user.id %></td>
-            <td><%= user.name %></td>
-            <td><%= if user.is_admin, do: "Yes", else: "No" %></td>
-            </tr>
-        <% end %>
-    </tbody>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Admin?</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for user <- @users do %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.email %></td>
+        <td><%= if user.is_admin, do: "Yes", else: "No" %></td>
+        <td>
+          <%= if !user.is_admin do %>
+            <.link href={~p"/admin/make_admin/#{user.id}"}>Make Admin</.link>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <.link href={~p"/admin"}>Back to Admin Dashboard</.link>

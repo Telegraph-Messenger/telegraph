@@ -1,5 +1,6 @@
 defmodule TelegraphWeb.AdminController do
   use TelegraphWeb, :controller
+  alias Telegraph.Accounts
 
   def index(conn, _params) do
     render(conn, :index, message: "Welcome to the Admin Dashboard")
@@ -7,14 +8,16 @@ defmodule TelegraphWeb.AdminController do
   end
 
   def users(conn, _params) do
-    # Here you would typically fetch users from your database
-    # For now, let's just pass a list of sample users
-    users = [
-      %{id: 1, name: "Alice", is_admin: true},
-      %{id: 2, name: "Bob", is_admin: false},
-      %{id: 3, name: "Charlie", is_admin: false}
-    ]
-
+    users = Accounts.list_users()
     render(conn, :users, users: users)
+  end
+
+  def make_admin(conn, %{"id" => id}) do
+    user = Accounts.get_user!(id)
+    {:ok, _updated_user} = Accounts.update_user(user, %{is_admin: true})
+
+    conn
+    |> put_flash(:info, "User has been made an admin.")
+    |> redirect(to: ~p"/admin/users")
   end
 end

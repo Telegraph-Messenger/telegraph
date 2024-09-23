@@ -7,8 +7,6 @@ defmodule TelegraphWeb.AdminAuth do
   def call(conn, _opts) do
     user = conn.assigns[:current_user]
 
-    IO.inspect(user, label: "User")
-
     if user && user.is_admin do
       conn
     else
