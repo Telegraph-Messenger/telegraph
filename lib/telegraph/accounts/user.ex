@@ -3,11 +3,12 @@ defmodule Telegraph.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
-    field :current_password, :string, virtual: true, redact: true
-    field :confirmed_at, :naive_datetime
+    field(:email, :string)
+    field(:password, :string, virtual: true, redact: true)
+    field(:hashed_password, :string, redact: true)
+    field(:current_password, :string, virtual: true, redact: true)
+    field(:confirmed_at, :naive_datetime)
+    field(:is_admin, :boolean, default: false)
 
     timestamps()
   end
@@ -37,9 +38,21 @@ defmodule Telegraph.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :is_admin])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> validate_is_admin()
+  end
+
+  defp validate_is_admin(changeset) do
+    changeset
+    |> validate_inclusion(:is_admin, [true, false])
+  end
+
+  def admin_status_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:is_admin])
+    |> validate_is_admin()
   end
 
   defp validate_email(changeset, opts) do

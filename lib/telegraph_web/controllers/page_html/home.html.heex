@@ -1,2 +1,6 @@
-   <h1>Welcome to Telegraph</h1>
-   <p>Your custom home page content goes here.</p>
+<h1>Welcome to Telegraph</h1>
+<p>Your custom home page content goes here.</p>
+
+<%= if TelegraphWeb.admin?(@conn) do %>
+   <.link href={~p"/admin"}>Admin Dashboard</.link>
+<% end %>

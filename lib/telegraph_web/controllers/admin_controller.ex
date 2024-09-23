@@ -10,9 +10,9 @@ defmodule TelegraphWeb.AdminController do
     # Here you would typically fetch users from your database
     # For now, let's just pass a list of sample users
     users = [
-      %{id: 1, name: "Alice"},
-      %{id: 2, name: "Bob"},
-      %{id: 3, name: "Charlie"}
+      %{id: 1, name: "Alice", is_admin: true},
+      %{id: 2, name: "Bob", is_admin: false},
+      %{id: 3, name: "Charlie", is_admin: false}
     ]
 
     render(conn, :users, users: users)

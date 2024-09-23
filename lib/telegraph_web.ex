@@ -110,4 +110,12 @@ defmodule TelegraphWeb do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+  @doc """
+  When used, tells us if the current user is an admin.
+  """
+  def admin?(conn) do
+    user = conn.assigns[:current_user]
+    user && user.is_admin
+  end
 end

@@ -17,6 +17,11 @@ defmodule TelegraphWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :admin do
+    plug(:browser)
+    plug(TelegraphWeb.AdminAuth)
+  end
+
   scope "/", TelegraphWeb do
     pipe_through(:browser)
 
@@ -24,7 +29,7 @@ defmodule TelegraphWeb.Router do
   end
 
   scope "/admin", TelegraphWeb do
-    pipe_through([:browser])
+    pipe_through([:admin])
 
     get("/", AdminController, :index)
     get("/users", AdminController, :users)
