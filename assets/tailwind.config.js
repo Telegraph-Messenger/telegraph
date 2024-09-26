@@ -20,6 +20,7 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("daisyui"),
     // Allows prefixing tailwind classes with LiveView classes to add rules
     // only when LiveView classes are applied, for example:
     //
@@ -63,5 +64,8 @@ module.exports = {
         }
       }, {values})
     })
-  ]
+  ],
+  daisyui: {
+    themes: ["light", "dark"], // You can specify which themes you want to use
+  },
 }

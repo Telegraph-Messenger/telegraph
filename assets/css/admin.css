@@ -1,0 +1,10 @@
+/* assets/css/admin.css */
+.menu li a {
+    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100;
+}
+
+.menu li a.active {
+    @apply bg-gray-100 text-gray-900;
+}
+
+/* Add more custom styles as needed */

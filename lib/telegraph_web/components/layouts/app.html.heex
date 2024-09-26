@@ -1,32 +1,29 @@
-<header class="px-4 sm:px-6 lg:px-8">
-  <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
-    <div class="flex items-center gap-4">
-      <a href="/">
-        <img src={~p"/images/logo.svg"} width="36" />
-      </a>
-      <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-        v<%= Application.spec(:phoenix, :vsn) %>
-      </p>
+<div class="drawer lg:drawer-open">
+  <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col">
+    <!-- Page content here -->
+    <div class="navbar bg-base-100">
+      <div class="flex-none lg:hidden">
+        <label for="my-drawer-2" class="btn btn-square btn-ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </label>
+      </div>
+      <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl">Telegraph Admin</a>
+      </div>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
-      <a href="https://twitter.com/elixirphoenix" class="hover:text-zinc-700">
-        @elixirphoenix
-      </a>
-      <a href="https://github.com/phoenixframework/phoenix" class="hover:text-zinc-700">
-        GitHub
-      </a>
-      <a
-        href="https://hexdocs.pm/phoenix/overview.html"
-        class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80"
-      >
-        Get Started <span aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
+    <main class="p-4">
+      <.flash_group flash={@flash} />
+      <%= @inner_content %>
+    </main>
   </div>
-</header>
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
-    <.flash_group flash={@flash} />
-    <%= @inner_content %>
+  <div class="drawer-side">
+    <label for="my-drawer-2" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
+      <!-- Sidebar content here -->
+      <li><a href={~p"/admin"}>Dashboard</a></li>
+      <li><a href={~p"/admin/users"}>Users</a></li>
+      <!-- Add more menu items as needed -->
+    </ul>
   </div>
-</main>
+</div>
