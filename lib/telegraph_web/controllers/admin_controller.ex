@@ -3,13 +3,17 @@ defmodule TelegraphWeb.AdminController do
   alias Telegraph.Accounts
 
   def index(conn, _params) do
-    render(conn, :index, message: "Welcome to the Admin Dashboard")
+    render(conn, :index,
+      layout: {TelegraphWeb.Layouts, :admin},
+      message: "Welcome to the Admin Dashboard"
+    )
+
     # render(conn, :hello, message: "Welcome to the Admin Dashboard")
   end
 
   def users(conn, _params) do
     users = Accounts.list_users()
-    render(conn, :users, users: users)
+    render(conn, :users, users: users, layout: {TelegraphWeb.Layouts, :admin})
   end
 
   def make_admin(conn, %{"id" => id}) do
