@@ -33,7 +33,8 @@ defmodule TelegraphWeb.Router do
 
     get("/", AdminController, :index)
     get("/users", AdminController, :users)
-    get("/make_admin/:id", AdminController, :make_admin)
+    post("/make_admin/:id", AdminController, :make_admin)
+    post("/demote_admin/:id", AdminController, :demote_admin)
   end
 
   # Other scopes may use custom stacks.
