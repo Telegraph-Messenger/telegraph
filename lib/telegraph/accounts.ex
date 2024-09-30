@@ -370,11 +370,18 @@ defmodule Telegraph.Accounts do
   end
 
   @doc """
-  Lists all users, ordered by ID.
+  Lists users with pagination.
   """
-  def list_users do
+  def list_users(page, per_page) do
     User
     |> order_by([u], asc: u.id)
-    |> Repo.all()
+    |> Repo.paginate(page: page, page_size: per_page)
+  end
+
+  @doc """
+  Returns the total number of users.
+  """
+  def count_users do
+    Repo.aggregate(User, :count, :id)
   end
 end

@@ -4,12 +4,23 @@ defmodule TelegraphWeb.Live.AdminUsersLive do
 
   on_mount({TelegraphWeb.UserAuth, :mount_current_user})
 
+  @per_page 10
+
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket,
-       users: Accounts.list_users(),
-       active_page: :users
-     ), layout: {TelegraphWeb.Layouts, :admin}}
+     socket
+     |> assign(page: 1, per_page: @per_page)
+     |> fetch_users()
+     |> assign(active_page: :users), layout: {TelegraphWeb.Layouts, :admin}}
+  end
+
+  def handle_params(params, _url, socket) do
+    page = String.to_integer(params["page"] || "1")
+    {:noreply, socket |> assign(page: page) |> fetch_users()}
+  end
+
+  def handle_event("nav", %{"page" => page}, socket) do
+    {:noreply, push_patch(socket, to: ~p"/admin/users?page=#{page}")}
   end
 
   def handle_event("make_admin", %{"id" => id}, socket) do
@@ -35,12 +46,18 @@ defmodule TelegraphWeb.Live.AdminUsersLive do
              :info,
              "User has been #{if(is_admin, do: "promoted to", else: "demoted from")} admin."
            )
-           |> assign(users: Accounts.list_users())}
+           |> fetch_users()}
 
         {:error, _changeset} ->
           {:noreply, put_flash(socket, :error, "Failed to update user.")}
       end
     end
+  end
+
+  defp fetch_users(socket) do
+    %{page: page, per_page: per_page} = socket.assigns
+    paginated_users = Accounts.list_users(page, per_page)
+    assign(socket, users: paginated_users.entries, total_pages: paginated_users.total_pages)
   end
 
   def render(assigns) do
@@ -76,7 +93,19 @@ defmodule TelegraphWeb.Live.AdminUsersLive do
       </tbody>
     </table>
 
-    <.link navigate={~p"/admin"} class="btn btn-primary mt-4">Back to Admin Dashboard</.link>
+    <div class="btn-group mt-4">
+      <%= if @total_pages > 1 do %>
+        <%= for page <- 1..@total_pages do %>
+          <button class={"btn #{if @page == page, do: "btn-active"}"} phx-click="nav" phx-value-page={page}>
+            <%= page %>
+          </button>
+        <% end %>
+      <% else %>
+        <span class="text-gray-500">Only one page</span>
+      <% end %>
+    </div>
+
+    <.link navigate={~p"/admin"} class="btn btn-primary mt-4 ml-4">Back to Admin Dashboard</.link>
     """
   end
 end

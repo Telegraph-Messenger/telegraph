@@ -8,8 +8,8 @@ defmodule TelegraphWeb.Live.AdminLive do
     {:ok,
      assign(socket,
        message: "Welcome to the Admin Dashboard",
-       active_page: :dashboard,
-       users: Accounts.list_users()
+       active_page: :dashboard
+       #  users: Accounts.list_users()
      ), layout: {TelegraphWeb.Layouts, :admin}}
   end
 
