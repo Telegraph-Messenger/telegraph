@@ -370,9 +370,11 @@ defmodule Telegraph.Accounts do
   end
 
   @doc """
-  Lists all users.
+  Lists all users, ordered by ID.
   """
   def list_users do
-    Repo.all(User)
+    User
+    |> order_by([u], asc: u.id)
+    |> Repo.all()
   end
 end
