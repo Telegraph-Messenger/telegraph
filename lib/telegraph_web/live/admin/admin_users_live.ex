@@ -64,22 +64,22 @@ defmodule TelegraphWeb.Live.AdminUsersLive do
     ~H"""
     <h1>Admin Users</h1>
 
-    <table class="table w-full">
+    <table class="table table-zebra w-full">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Email</th>
-          <th>Admin?</th>
-          <th>Actions</th>
+          <th class="text-left">ID</th>
+          <th class="text-left">Email</th>
+          <th class="text-center">Admin?</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <%= for user <- @users do %>
-          <tr class={if user.id == @current_user.id, do: "bg-accent text-accent-content", else: ""}>
+          <tr class={"hover:bg-gray-100 #{if user.id == @current_user.id, do: "bg-accent text-accent-content"}"}>
             <td><%= user.id %></td>
             <td><%= user.email %></td>
-            <td><%= if user.is_admin, do: "Yes", else: "No" %></td>
-            <td>
+            <td class="text-center"><%= if user.is_admin, do: "Yes", else: "No" %></td>
+            <td class="text-center">
               <%= if user.is_admin do %>
                 <%= if user.id != @current_user.id do %>
                   <button phx-click="demote_admin" phx-value-id={user.id} data-confirm="Are you sure you want to demote this admin?" class="btn btn-sm btn-error">Demote Admin</button>
@@ -93,15 +93,13 @@ defmodule TelegraphWeb.Live.AdminUsersLive do
       </tbody>
     </table>
 
-    <div class="btn-group mt-4">
+    <div class="btn-group mt-4 justify-center">
       <%= if @total_pages > 1 do %>
         <%= for page <- 1..@total_pages do %>
-          <button class={"btn #{if @page == page, do: "btn-active"}"} phx-click="nav" phx-value-page={page}>
+          <button class={"btn btn-sm #{if @page == page, do: "btn-active"}"} phx-click="nav" phx-value-page={page}>
             <%= page %>
           </button>
         <% end %>
-      <% else %>
-        <span class="text-gray-500">Only one page</span>
       <% end %>
     </div>
 

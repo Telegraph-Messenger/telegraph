@@ -2,14 +2,16 @@
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
     <!-- Page content here -->
-    <div class="navbar bg-base-100">
+    <div class="navbar bg-base-100 shadow-lg mb-4">
       <div class="flex-none lg:hidden">
         <label for="my-drawer-2" class="btn btn-square btn-ghost">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
         </label>
       </div>
       <div class="flex-1">
-        <a class="btn btn-ghost normal-case text-xl">Telegraph Admin</a>
+        <a class="text-xl font-bold normal-case text-gray-800 transition-colors duration-200">Telegraph Admin</a>
       </div>
     </div>
     <main class="p-4">
@@ -19,11 +21,27 @@
   </div>
   <div class="drawer-side">
     <label for="my-drawer-2" class="drawer-overlay"></label>
-    <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
-      <!-- Sidebar content here -->
-      <li><.link navigate={~p"/admin"} class={"btn btn-ghost #{@active_page == :dashboard && "btn-active"}"}>Dashboard</.link></li>
-      <li><.link navigate={~p"/admin/users"} class={"btn btn-ghost #{@active_page == :users && "btn-active"}"}>Users</.link></li>
-      <!-- Add more menu items as needed -->
+    <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content space-y-2">
+      <li>
+        <.link navigate={~p"/admin"} class={"btn btn-ghost flex items-center space-x-2 #{@active_page == :dashboard && "bg-primary text-white"}"}>
+          <%!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M10 3a1 1 0 01.93.62l1.518 3.787a1 1 0 00.93.61h4.05a1 1 0 01.9 1.447l-2.74 4.658a1 1 0 000 1.054l2.74 4.658a1 1 0 01-.9 1.447h-4.05a1 1 0 00-.93.61l-1.518 3.787A1 1 0 0110 17H5.78a1 1 0 01-.93-.62L3.332 13.59a1 1 0 00-.93-.61H1a1 1 0 01-.9-1.447l2.74-4.658a1 1 0 000-1.054L.1 1.79A1 1 0 011 0h4.05a1 1 0 00.93-.61L10 .208z"
+              clip-rule="evenodd"
+            />
+          </svg> --%>
+          <span>Dashboard</span>
+        </.link>
+      </li>
+      <li>
+        <.link navigate={~p"/admin/users"} class={"btn btn-ghost flex items-center space-x-2 #{@active_page == :users && "bg-primary text-white"}"}>
+          <%!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 6a4 4 0 100 8 4 4 0 000-8zM10 4a6 6 0 100 12 6 6 0 000-12z" />
+          </svg> --%>
+          <span>Users</span>
+        </.link>
+      </li>
     </ul>
   </div>
 </div>
