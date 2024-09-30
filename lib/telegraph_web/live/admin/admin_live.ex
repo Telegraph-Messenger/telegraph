@@ -2,6 +2,8 @@ defmodule TelegraphWeb.Live.AdminLive do
   use TelegraphWeb, :live_view
   alias Telegraph.Accounts
 
+  on_mount({TelegraphWeb.UserAuth, :mount_current_user})
+
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
