@@ -28,11 +28,17 @@ defmodule TelegraphWeb.Router do
     live("/", CounterLive)
   end
 
-  scope "/admin", TelegraphWeb do
+  scope "/admin", TelegraphWeb.Admin do
     pipe_through([:browser, :require_authenticated_user, :admin])
 
     live("/", Live.AdminLive, :index)
-    live("/users", Live.AdminUsersLive, :users)
+    # live("/users", Live.AdminUsersLive, :users)
+    # live("/user/:id", Live.AdminUserEditLive, :edit)
+
+    live("/users", UserLive.Index, :index)
+    live("/users/new", UserLive.Index, :new)
+    live("/users/:id/edit", UserLive.Index, :edit)
+    live("/users/:id", UserLive.Show, :show)
   end
 
   # Other scopes may use custom stacks.

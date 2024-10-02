@@ -80,10 +80,7 @@ defmodule Telegraph.Accounts.User do
 
     if hash_password? && password && changeset.valid? do
       changeset
-      # If using Bcrypt, then further validate it is at most 72 bytes long
       |> validate_length(:password, max: 72, count: :bytes)
-      # Hashing could be done with `Ecto.Changeset.prepare_changes/2`, but that
-      # would keep the database transaction open longer and hurt performance.
       |> put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
       |> delete_change(:password)
     else
@@ -169,6 +166,81 @@ defmodule Telegraph.Accounts.User do
       changeset
     else
       add_error(changeset, :current_password, "is not valid")
+    end
+  end
+
+  def update_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :is_admin])
+    |> validate_required([:email])
+    |> validate_email([])
+    |> validate_is_admin()
+  end
+
+  # Reuse existing validation functions
+  defp validate_email(changeset, opts) do
+    changeset
+    |> validate_required([:email])
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> validate_length(:email, max: 160)
+    |> maybe_validate_unique_email(opts)
+  end
+
+  defp validate_is_admin(changeset) do
+    changeset
+    |> validate_inclusion(:is_admin, [true, false])
+  end
+
+  @doc """
+  A user changeset for admin operations.
+
+  This changeset allows admins to create or update user accounts, including
+  setting the admin status and optionally changing the password.
+
+  ## Options
+
+    * `:hash_password` - Hashes the password if provided. Defaults to `true`.
+  """
+  def admin_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :password, :is_admin])
+    |> validate_required([:email, :is_admin])
+    |> validate_email([])
+    |> maybe_validate_password(user.id, opts)
+  end
+
+  defp validate_password(changeset, opts) do
+    changeset
+    |> validate_length(:password, min: 12, max: 72)
+    |> maybe_hash_password(opts)
+  end
+
+  defp maybe_validate_password(changeset, nil, opts) do
+    # New user, password is required
+    changeset
+    |> validate_required([:password])
+    |> validate_password(opts)
+  end
+
+  defp maybe_validate_password(changeset, _user_id, opts) do
+    # Existing user, password is optional
+    if get_change(changeset, :password) do
+      validate_password(changeset, opts)
+    else
+      changeset
+    end
+  end
+
+  defp maybe_hash_password(changeset, opts) do
+    hash_password? = Keyword.get(opts, :hash_password, true)
+    password = get_change(changeset, :password)
+
+    if hash_password? && password && changeset.valid? do
+      changeset
+      |> put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
+      |> delete_change(:password)
+    else
+      changeset
     end
   end
 end

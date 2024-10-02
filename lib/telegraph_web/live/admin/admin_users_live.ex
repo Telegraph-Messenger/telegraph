@@ -80,6 +80,7 @@ defmodule TelegraphWeb.Live.AdminUsersLive do
             <td><%= user.email %></td>
             <td class="text-center"><%= if user.is_admin, do: "Yes", else: "No" %></td>
             <td class="text-center">
+              <.link navigate={~p"/admin/user/#{user.id}"} class="btn btn-sm btn-info">Edit</.link>
               <%= if user.is_admin do %>
                 <%= if user.id != @current_user.id do %>
                   <button phx-click="demote_admin" phx-value-id={user.id} data-confirm="Are you sure you want to demote this admin?" class="btn btn-sm btn-error">Demote Admin</button>
